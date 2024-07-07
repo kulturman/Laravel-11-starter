@@ -8,8 +8,18 @@ stop:
 
 bash:
 	 $(dc_exec) bash
+
 composer:
 	$(dc_exec) composer install
+
+php-stan:
+	$(dc_exec) ./vendor/bin/phpstan analyse --memory-limit=2G
+
+check-style:
+	$(dc_exec) ./vendor/bin/pint --test
+
+fix-style:
+	$(dc_exec) ./vendor/bin/pint
 
 install: start composer
 
