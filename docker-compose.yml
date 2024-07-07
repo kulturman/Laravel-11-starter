@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+
+  backend:
+    container_name: backend
+    build:
+      context: .
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - "database"
+    ports:
+      - 8083:80
+    networks:
+      - backend-network
+  database:
+    container_name: backend-db
+    image: mysql:8.0
+    volumes:
+      - backend-db-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: backend
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_PASSWORD: admin
+      MYSQL_USER: admin
+    ports:
+      - "33062:3306"
+    networks:
+      - backend-network
+  # Database management
+  pma:
+    image: phpmyadmin:5.1
+    networks:
+      - backend-network
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=database
+      - PMA_USER=admin
+      - PMA_PASSWORD=admin
+      - PMA_PORT=3306
+    depends_on:
+      - database
+    ports:
+      - 8893:80
+
+volumes:
+  backend-db-data:
+
+networks:
+  backend-network:
