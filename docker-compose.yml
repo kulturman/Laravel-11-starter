@@ -1,6 +1,5 @@
 version: '3.8'
 services:
-
   backend:
     container_name: backend
     build:
@@ -18,7 +17,7 @@ services:
     container_name: backend-db
     image: mysql:8.0
     volumes:
-      - backend-db-data:/var/lib/mysql
+      - backend-mysql-data:/var/lib/mysql
     environment:
       MYSQL_DATABASE: backend
       MYSQL_ROOT_PASSWORD: root
@@ -45,7 +44,7 @@ services:
       - 8893:80
 
 volumes:
-  backend-db-data:
+  backend-mysql-data:
 
 networks:
   backend-network:
